@@ -8,11 +8,13 @@ IntelliJ | Scene Builder
 
 object oriented programming
 
+model | view | controller architecture
+
 event handling
 
-appliaction development
+application development
 
-model | view | controller
+user interface development
 
 controller communication
 
