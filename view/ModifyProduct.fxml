@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="575.0" prefWidth="725.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModifyProduct">
+   <children>
+      <AnchorPane layoutX="31.0" layoutY="38.0" prefHeight="500.0" prefWidth="664.0" style="-fx-border-color: black; -fx-border-radius: 10;">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="Modify Product">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="24.0" />
+               </font>
+            </Label>
+            <Button layoutX="422.0" layoutY="14.0" mnemonicParsing="false" onAction="#onActionSearchPart" text="Search" />
+            <TextField fx:id="searchPartText" layoutX="480.0" layoutY="14.0" prefHeight="25.0" prefWidth="166.0" promptText="Search by Part ID or Name" />
+            <Button layoutX="552.0" layoutY="222.0" mnemonicParsing="false" onAction="#onActionAddPart" text="Add" />
+            <Button layoutX="506.0" layoutY="421.0" mnemonicParsing="false" onAction="#onActionRemovePart" text="Remove Associated Part" />
+            <Button layoutX="506.0" layoutY="455.0" mnemonicParsing="false" onAction="#onActionSaveProduct" text="Save" />
+            <Button layoutX="598.0" layoutY="455.0" mnemonicParsing="false" onAction="#onActionCancel" text="Cancel" />
+            <GridPane layoutX="27.0" layoutY="85.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="60.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="140.0" minWidth="10.0" prefWidth="140.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="ID" />
+                  <Label text="Name" GridPane.rowIndex="1" />
+                  <TextField fx:id="productId" disable="true" editable="false" promptText="Auto Gen - Disabled" GridPane.columnIndex="1" />
+                  <TextField fx:id="productName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <Label layoutX="27.0" layoutY="154.0" text="Inv" />
+            <TextField fx:id="productStock" layoutX="88.0" layoutY="150.0" prefHeight="25.0" prefWidth="59.0" />
+            <Label layoutX="27.0" layoutY="184.0" text="Price" />
+            <TextField fx:id="productPrice" layoutX="88.0" layoutY="180.0" prefHeight="25.0" prefWidth="59.0" />
+            <Label layoutX="27.0" layoutY="214.0" text="Max" />
+            <TextField fx:id="productMax" layoutX="88.0" layoutY="210.0" prefHeight="25.0" prefWidth="59.0" />
+            <Label layoutX="161.0" layoutY="214.0" text="Min" />
+            <TextField fx:id="productMin" layoutX="198.0" layoutY="210.0" prefHeight="25.0" prefWidth="59.0" />
+            <TableView fx:id="partTableView" layoutX="285.0" layoutY="57.0" prefHeight="157.0" prefWidth="365.0">
+              <columns>
+                <TableColumn fx:id="partIdCol" prefWidth="49.0" text="Part ID" />
+                <TableColumn fx:id="partNameCol" prefWidth="71.0" text="Part Name" />
+                  <TableColumn fx:id="partStockCol" prefWidth="102.0" text="Inventory Level" />
+                  <TableColumn fx:id="partPricePerUnitCol" prefWidth="155.0" text="Price/Cost per Unit" />
+              </columns>
+            </TableView>
+            <TableView fx:id="associatedPartsTable" layoutX="285.0" layoutY="256.0" prefHeight="157.0" prefWidth="365.0">
+               <columns>
+                  <TableColumn fx:id="partIdProductCol" prefWidth="57.0" text="Part ID" />
+                  <TableColumn fx:id="partNameProductCol" prefWidth="77.0" text="Part Name" />
+                  <TableColumn fx:id="partStockProductCol" prefWidth="101.0" text="Inventory Level" />
+                  <TableColumn fx:id="partPricePerUnitProductCol" prefWidth="129.0" text="Price/Cost per Unit" />
+               </columns>
+            </TableView>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>

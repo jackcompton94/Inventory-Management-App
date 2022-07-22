@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="995.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenu">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="Inventory Management System" textFill="#6085ff">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Button layoutX="916.0" layoutY="361.0" mnemonicParsing="false" onAction="#onActionExit" text="Exit">
+         <padding>
+            <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+         </padding>
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font></Button>
+      <AnchorPane layoutX="14.0" layoutY="63.0" prefHeight="275.0" prefWidth="475.0" style="-fx-border-color: black; -fx-border-radius: 10;">
+         <children>
+            <Label layoutX="39.0" layoutY="14.0" text="Parts">
+               <font>
+                  <Font name="Arial Black" size="12.0" />
+               </font>
+            </Label>
+            <Button fx:id="searchPart" layoutX="224.0" layoutY="10.0" mnemonicParsing="false" onAction="#onActionSearchPart" text="Search" />
+            <TextField fx:id="searchPartText" layoutX="281.0" layoutY="10.0" prefHeight="25.0" prefWidth="158.0" promptText="Search by Part ID or Name" />
+            <TableView fx:id="partTableView" layoutX="38.0" layoutY="50.0" prefHeight="175.0" prefWidth="400.0">
+              <columns>
+                <TableColumn fx:id="partIdCol" prefWidth="60.0" text="Part ID" />
+                <TableColumn fx:id="partNameCol" minWidth="0.0" prefWidth="82.0" text="Name" />
+                  <TableColumn fx:id="partStockCol" minWidth="0.0" prefWidth="118.0" text="Inventory Level" />
+                  <TableColumn fx:id="partPricePerUnitCol" minWidth="9.0" prefWidth="139.0" text="Price/Cost per Unit" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <Button layoutX="250.0" layoutY="233.0" mnemonicParsing="false" onAction="#onActionAddPart" text="Add" />
+            <Button fx:id="modifyButton" layoutX="311.0" layoutY="233.0" mnemonicParsing="false" onAction="#onActionModifyPart" text="Modify" />
+            <Button layoutX="387.0" layoutY="233.0" mnemonicParsing="false" onAction="#onActionDeletePart" text="Delete" />
+         </children></AnchorPane>
+      <AnchorPane layoutX="503.0" layoutY="63.0" prefHeight="275.0" prefWidth="475.0" style="-fx-border-color: black; -fx-border-radius: 10;">
+         <children>
+            <Label layoutX="39.0" layoutY="14.0" text="Products">
+               <font>
+                  <Font name="Arial Black" size="12.0" />
+               </font>
+            </Label>
+            <Button fx:id="searchProduct" layoutX="205.0" layoutY="10.0" mnemonicParsing="false" onAction="#onActionSearchProduct" text="Search" />
+            <TextField fx:id="searchProductText" layoutX="264.0" layoutY="10.0" prefHeight="25.0" prefWidth="175.0" promptText="Search by Product ID or Name" />
+            <TableView fx:id="productTableView" layoutX="38.0" layoutY="50.0" prefHeight="175.0" prefWidth="400.0">
+               <columns>
+                  <TableColumn fx:id="productIdCol" prefWidth="82.0" text="Product ID" />
+                  <TableColumn fx:id="productNameCol" prefWidth="76.0" text="Name" />
+                  <TableColumn fx:id="productStockCol" prefWidth="108.0" text="Inventory Level" />
+                  <TableColumn fx:id="productPricePerUnitCol" minWidth="9.0" prefWidth="133.0" text="Price/Cost per Unit" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <Button layoutX="250.0" layoutY="233.0" mnemonicParsing="false" onAction="#onActionAddProduct" text="Add" />
+            <Button layoutX="311.0" layoutY="233.0" mnemonicParsing="false" onAction="#onActionModifyProduct" text="Modify" />
+            <Button layoutX="387.0" layoutY="233.0" mnemonicParsing="false" onAction="#onActionDeleteProduct" text="Delete" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
