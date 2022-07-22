@@ -2,11 +2,9 @@
 
 C482 | Java
 
-JavaFX/FXML
+JavaFX | FXML 
 
-IntelliJ
-
-scene builder
+IntelliJ | Scene Builder
 
 object oriented programming
 
