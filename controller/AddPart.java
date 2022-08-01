@@ -12,7 +12,6 @@ import main.Main;
 import model.InHouse;
 import model.InventoryData;
 import model.Outsourced;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -57,7 +56,7 @@ public class AddPart implements Initializable {
     @FXML
     private TextField partMachineId;
 
-    // TEXT LABEL HANDLER IN GUI
+    // text label handler in GUI
     public void inHouseButton(ActionEvent actionEvent) {
         toggleLabel.setText("Machine ID");
     }
@@ -69,6 +68,7 @@ public class AddPart implements Initializable {
         try {
             int id = Main.generateUniqueID();
 
+            // checking inhouse/outsource button selection to save correct part type
             if (inHouseButton.isSelected()) {
                 String name = partName.getText();
                 double price = Double.parseDouble(partPrice.getText());
@@ -77,7 +77,7 @@ public class AddPart implements Initializable {
                 int max = Integer.parseInt(partMax.getText());
                 int machineId = Integer.parseInt(partMachineId.getText());
 
-                // LOGIC HANDLING OF INPUT VALUES
+                // input value logic check
                 if (min > max){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Format Error");
@@ -104,7 +104,7 @@ public class AddPart implements Initializable {
                 int max = Integer.parseInt(partMax.getText());
                 String companyName = partMachineId.getText();
 
-                // LOGIC HANDLING OF INPUT VALUES
+                // input value logic check
                 if (min > max){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Format Error");
@@ -124,6 +124,8 @@ public class AddPart implements Initializable {
                 }
             }
         }
+
+        // prevents program from attempting to save null/invalid text fields
         catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Format Error");
@@ -135,7 +137,7 @@ public class AddPart implements Initializable {
     @FXML
     public void onActionCancel(ActionEvent actionEvent) throws IOException {
         stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+        scene = FXMLLoader.load(Main.class.getResource("MainMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
