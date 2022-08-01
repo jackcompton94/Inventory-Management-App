@@ -10,7 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.*;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -67,15 +66,29 @@ public class MainMenu implements Initializable {
     public void onActionSearchPart(ActionEvent actionEvent) {
         String search = searchPartText.getText();
 
+        partTableView.getSelectionModel().clearSelection();
+
         if (search.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter text to Search!");
             alert.showAndWait();
         }
+
         if (!search.isEmpty()) {
             for (Part part : InventoryData.getAllParts()) {
                 if (part.getName().contains(search) || Integer.toString(part.getId()).contains(search)) {
+
+                    partTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
                     partTableView.getSelectionModel().select(part);
                 }
+            }
+
+            if (!partTableView.getSelectionModel().getSelectedItems().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Part(s) found!");
+                alert.showAndWait();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "No Part(s) found!");
+                alert.showAndWait();
             }
         }
     }
@@ -84,15 +97,29 @@ public class MainMenu implements Initializable {
     public void onActionSearchProduct(ActionEvent actionEvent) {
         String search = searchProductText.getText();
 
+        productTableView.getSelectionModel().clearSelection();
+
         if (search.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter text to Search!");
             alert.showAndWait();
         }
+
         if (!search.isEmpty()) {
             for (Product product : InventoryData.getAllProducts()) {
                 if (product.getName().contains(search) || Integer.toString(product.getId()).contains(search)) {
+
+                    productTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
                     productTableView.getSelectionModel().select(product);
                 }
+            }
+
+            if (!productTableView.getSelectionModel().getSelectedItems().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Product(s) found!");
+                alert.showAndWait();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "No Product(s) found!");
+                alert.showAndWait();
             }
         }
     }
