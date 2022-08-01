@@ -2,7 +2,7 @@
 
 // TODO: revisions needed:
 
-// - ALL search options to include "multi-select" when finding parts/products with matching characters
+// - ALL search options to include successful/failed attempts of search results
 
 // - Include overkill amount of comments in describing functions to cover "communication"
 
