@@ -81,14 +81,46 @@ public class AddProduct implements Initializable {
     @FXML
     private TextField productMax;
 
-    // TEMPORARY "PRODUCT BUILD" LIST
+    // temporary "product build" list
     private static ObservableList<Part> partToProduct = FXCollections.observableArrayList();
     public static ObservableList<Part> getAllPartToProduct() {return partToProduct;}
+
+    public void onActionSearchPart(ActionEvent actionEvent) {
+        String search = searchPartText.getText();
+
+        partTableView.getSelectionModel().clearSelection();
+
+        // user input check
+        if (search.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter text to Search!");
+            alert.showAndWait();
+        }
+
+        // loops through the arrayList to find a match (or multiple matches)
+        if (!search.isEmpty()) {
+            for (Part part : InventoryData.getAllParts()) {
+                if (part.getName().contains(search) || Integer.toString(part.getId()).contains(search)) {
+                    partTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+                    partTableView.getSelectionModel().select(part);
+                }
+            }
+
+            // end of loop confirmation for if a match is found
+            if (!partTableView.getSelectionModel().getSelectedItems().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Part(s) found!");
+                alert.showAndWait();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "No Part(s) found!");
+                alert.showAndWait();
+            }
+        }
+    }
 
     public void onActionCancel(ActionEvent actionEvent) throws IOException {
         partToProduct.clear();
         stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+        scene = FXMLLoader.load(Main.class.getResource("MainMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
@@ -96,7 +128,7 @@ public class AddProduct implements Initializable {
     public void onActionSaveProduct(ActionEvent actionEvent) {
         try {
             int id = Main.generateUniqueID();
-            // ENSURES PRODUCT IDs ARE SEPARATELY UNIQUE FROM PART IDs (+1000)
+            // confirms product IDs to be distinguishable from part IDs (+1000)
             id = id + 900;
 
             String name = productName.getText();
@@ -105,7 +137,7 @@ public class AddProduct implements Initializable {
             int min = Integer.parseInt(productMin.getText());
             int max = Integer.parseInt(productMax.getText());
 
-            // LOGIC HANDLING OF INPUT VALUES
+            // input value logic check
             if (min > max){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Format Error");
@@ -123,7 +155,7 @@ public class AddProduct implements Initializable {
                 newProduct = new Product(id, name, price, stock, min, max);
                 InventoryData.addProduct(newProduct);
 
-                // SWITCH OCCURS HERE TO PLACE THE TEMPORARY "PRODUCT BUILD" partToProduct LIST INTO A UNIQUE PRODUCT'S associatedParts
+                // for loop designed to capture the temporary "product build" list and sort into the associatedParts for a Product
                 for (int i = 0; i < partToProduct.size();) {
                     newProduct.addAssociatedPart(partToProduct.get(i));
                     i++;
@@ -132,6 +164,8 @@ public class AddProduct implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
             }
         }
+
+        // prevents program from attempting to save null/invalid text fields
         catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Format Error");
@@ -143,10 +177,13 @@ public class AddProduct implements Initializable {
     public void onActionRemovePart(ActionEvent actionEvent) {
         Part selection = partToProductTable.getSelectionModel().getSelectedItem();
 
+        // user input check
         if (selection == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a Part to remove!");
             alert.showAndWait();
         }
+
+        // user confirmation for deletions
         else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to remove this Part?");
             Optional<ButtonType> result = alert.showAndWait();
@@ -160,28 +197,13 @@ public class AddProduct implements Initializable {
     public void onActionAddPart(ActionEvent actionEvent) {
         Part selection = partTableView.getSelectionModel().getSelectedItem();
 
+        // user input check
         if (selection == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a Part to add!");
             alert.showAndWait();
         }
         else {
             partToProduct.add(selection);
-        }
-    }
-
-    public void onActionSearchPart(ActionEvent actionEvent) {
-        String search = searchPartText.getText();
-
-        if (search.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter text to Search!");
-            alert.showAndWait();
-        }
-        if (!search.isEmpty()) {
-            for (Part part : InventoryData.getAllParts()) {
-                if (part.getName().contains(search) || Integer.toString(part.getId()).contains(search)) {
-                    partTableView.getSelectionModel().select(part);
-                }
-            }
         }
     }
 
