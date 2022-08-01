@@ -1,14 +1,5 @@
 # inventoryManagementSystem
 
-// TODO: revisions needed:
-
-// - ALL search options to include successful/failed attempts of search results
-
-// - Include overkill amount of comments in describing functions to cover "communication"
-
-
-
-
 C482 | Java
 
 JavaFX | FXML 
