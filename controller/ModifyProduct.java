@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import model.InventoryData;
 import model.Part;
 import model.Product;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -83,15 +82,37 @@ public class ModifyProduct implements Initializable {
     @FXML
     private TextField productMin;
 
+    // temporary "product build" list
     private static ObservableList<Part> partToProduct = FXCollections.observableArrayList();
     public static ObservableList<Part> getAllPartToProduct() {return partToProduct;}
 
     public void onActionSearchPart(ActionEvent actionEvent) {
         String search = searchPartText.getText();
 
-        for (Part part : InventoryData.getAllParts()) {
-            if (part.getName().contains(search) || Integer.toString(part.getId()).contains(search)) {
-                partTableView.getSelectionModel().select(part);
+        partTableView.getSelectionModel().clearSelection();
+
+        // user input check
+        if (search.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter text to Search!");
+            alert.showAndWait();
+        }
+
+        // loops through the arrayList to find a match (or multiple matches)
+        if (!search.isEmpty()) {
+            for (Part part : InventoryData.getAllParts()) {
+                if (part.getName().contains(search) || Integer.toString(part.getId()).contains(search)) {
+                    partTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+                    partTableView.getSelectionModel().select(part);
+                }
+            }
+
+            // end of loop confirmation for if a match is found
+            if (!partTableView.getSelectionModel().getSelectedItems().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Part(s) found!");
+                alert.showAndWait();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "No Part(s) found!");
+                alert.showAndWait();
             }
         }
     }
@@ -104,7 +125,7 @@ public class ModifyProduct implements Initializable {
         productMax.setText(String.valueOf(Integer.valueOf(product.getMax())));
         productMin.setText(String.valueOf(Integer.valueOf(product.getMin())));
 
-        // BRINGS associatedParts INTO TABLE AND SWAPS WITH partsToProduct TO ALLOW A DYNAMIC "BUILD LIST"
+        // catches the associatedParts of a Product and swap to the partsToProduct to allow a dynamic temporary "build list"
         associatedPartsTable.setItems(product.getAllAssociatedParts());
         partToProduct.addAll(product.getAllAssociatedParts());
     }
@@ -112,10 +133,13 @@ public class ModifyProduct implements Initializable {
     public void onActionAddPart(ActionEvent actionEvent) {
         Part selection = partTableView.getSelectionModel().getSelectedItem();
 
+        // user input check
         if (selection == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a Part to add!");
             alert.showAndWait();
         }
+
+        // adds the temporary list back into the Products associatedParts
         else {
             partToProduct.add(selection);
             associatedPartsTable.setItems(partToProduct);
@@ -125,15 +149,18 @@ public class ModifyProduct implements Initializable {
     public void onActionRemovePart(ActionEvent actionEvent) {
         Part selection = associatedPartsTable.getSelectionModel().getSelectedItem();
 
+        // user input check
         if (selection == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a Part to remove!");
             alert.showAndWait();
         }
+
+        // confirmation of deletions
         else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to remove this Part?");
             Optional<ButtonType> result = alert.showAndWait();
 
-            // QUICK SWAP TAKING ADVANTAGE OF A SIMILAR CONCEPT AS THE DYNAMIC BUILD LIST ABOVE
+            // dynamically removing a Part while saving the latest arrayList in the associatedParts
             if (result.get() == ButtonType.OK) {
                 partToProduct.remove(selection);
                 associatedPartsTable.setItems(partToProduct);
@@ -151,7 +178,7 @@ public class ModifyProduct implements Initializable {
             int max = Integer.parseInt(productMax.getText());
             int index = -1;
 
-            // LOGIC HANDLING OF INPUT VALUES
+            // input value logic check
             if (min > max){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Format Error");
@@ -168,7 +195,7 @@ public class ModifyProduct implements Initializable {
                 Product newProduct;
                 newProduct = new Product(id, name, price, stock, min, max);
 
-                // FOR LOOP DESIGNED TO CAPTURE THE CORRECT INDEX OF getAllProducts()
+                // // for loop designed to capture the correct index of getAllProducts()
                 for (Product product : InventoryData.getAllProducts()) {
                     index++;
                     if (product.getId() == id) {break;}
@@ -183,6 +210,8 @@ public class ModifyProduct implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
             }
         }
+
+        // prevents program from attempting to save null/invalid text fields
         catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Format Error");
@@ -193,7 +222,7 @@ public class ModifyProduct implements Initializable {
 
     public void onActionCancel(ActionEvent actionEvent) throws IOException {
         stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+        scene = FXMLLoader.load(Main.class.getResource("MainMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
@@ -210,5 +239,8 @@ public class ModifyProduct implements Initializable {
         partNameProductCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         partStockProductCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         partPricePerUnitProductCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        // resets partsToProduct list each time ModifyProduct is loaded to prevent an overflow of memory from previous modified products
+        partToProduct.clear();
     }
 }
