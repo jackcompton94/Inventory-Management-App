@@ -60,7 +60,7 @@ public class ModifyPart implements Initializable {
     @FXML
     private TextField partMachineId;
 
-    // TEXT LABEL HANDLER IN GUI
+    // text label handler in GUI
     public void inHouseButton(ActionEvent actionEvent) {
         toggleLabel.setText("Machine ID");
     }
@@ -68,7 +68,7 @@ public class ModifyPart implements Initializable {
         toggleLabel.setText("Company Name");
     }
 
-    // CAPTURES DESIRED Outsourced Part OBJECT FROM MainMenu TO USE IN ModifyPart
+    // catches the Outsourced Part object from MainMenu
     public void sendOutsourcedPart(Outsourced part) {
         outsourcedButton.setSelected(true);
         toggleLabel.setText("Company Name");
@@ -81,7 +81,7 @@ public class ModifyPart implements Initializable {
         partMachineId.setText(String.valueOf(part.getCompanyName()));
     }
 
-    // CAPTURES DESIRED Inhouse Part OBJECT FROM MainMenu TO USE IN ModifyPart
+    // catches the Inhouse Part object from MainMenu
     public void sendInhousePart(InHouse part) {
         inHouseButton.setSelected(true);
         toggleLabel.setText("Machine ID");
@@ -106,7 +106,7 @@ public class ModifyPart implements Initializable {
                 int machineId = Integer.parseInt(partMachineId.getText());
                 int index = -1;
 
-                // LOGIC HANDLING OF INPUT VALUES
+                // input value logic check
                 if (min > max){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Format Error");
@@ -122,7 +122,7 @@ public class ModifyPart implements Initializable {
                 else {
                     InHouse selectedPart = new InHouse(id, name, price, stock, min, max, machineId);
 
-                    // FOR LOOP DESIGNED TO CAPTURE THE CORRECT INDEX OF getAllParts()
+                    // for loop designed to capture the correct index of getAllParts()
                     for (Part InHouse : InventoryData.getAllParts()) {
                         index++;
                         if(InHouse.getId() == id) {break;}
@@ -142,7 +142,7 @@ public class ModifyPart implements Initializable {
                 String companyName = partMachineId.getText();
                 int index = -1;
 
-                // LOGIC HANDLING OF INPUT VALUES
+                // input value logic check
                 if (min > max){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Format Error");
@@ -158,7 +158,7 @@ public class ModifyPart implements Initializable {
                 else {
                     Outsourced selectedPart = new Outsourced(id, name, price, stock, min, max, companyName);
 
-                    // FOR LOOP DESIGNED TO CAPTURE THE CORRECT INDEX OF getAllParts()
+                    // for loop designed to capture the index of getAllParts()
                     for (Part Outsourced : InventoryData.getAllParts()) {
                         index++;
                         if (Outsourced.getId() == id) {break;}
@@ -169,6 +169,8 @@ public class ModifyPart implements Initializable {
                 }
             }
         }
+
+        // prevents program from attempting to save null/invalid text fields
         catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Format Error");
@@ -180,7 +182,7 @@ public class ModifyPart implements Initializable {
     @FXML
     public void onActionCancel(ActionEvent actionEvent) throws IOException {
         stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+        scene = FXMLLoader.load(Main.class.getResource("MainMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
