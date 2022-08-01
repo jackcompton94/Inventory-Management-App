@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
     public static int n;
     private static int m;
+    
+    // placed in Main so that 'n' can be exclusively incremented and safe from ever creating a duplicate ID
     public static int generateUniqueID() {
         ++n;
         m = n + 100;
